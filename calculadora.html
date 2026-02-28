@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://images.vexels.com/media/users/3/129698/isolated/preview/e4e8f3ab76a1b4bc21c5d4b8d6594e83-icone-plano-da-calculadora.png">
+    <title>Calculadora</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100dvh;
+            width: 100dvw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .calculadora {
+            height: 600px;
+            width: 400px;
+            background-color: rgb(80, 80, 80);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            box-shadow: 10px 10px 10px;
+            margin: 30px 30px 30px 30px;
+        }
+        .visorCalculadora {
+            height: 60px;
+            background-color: rgb(124, 161, 68);
+            border-radius: 5px;
+            grid-area: visor;
+            align-self: center;
+            margin: 0 15px 0 15px;
+            padding: 0 5px 0 5px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            font-size: 2rem;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            scrollbar-gutter: stable;
+        }
+        .elementosCalculadora {
+            height: 100%;
+            width: 100%;
+            padding: 15px 15px 15px 15px;
+            display: grid;
+            grid-template-columns: repeat(4, auto);
+            grid-template-rows: repeat(4, auto);
+            grid-template-areas: 'visor visor visor visor';
+            grid-gap: 10px;
+        }
+        .botaoCalculadora {
+            height: 60px;
+            width: 60px;
+            background-color: gray;
+            color: white;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            justify-self: center;
+            align-self: center;
+        }
+        .botaoCalculadora:hover {
+            border: 1px solid white;
+        }
+        .botaoCalculadora:active {
+            transform: 0.1s;
+            opacity: 0.8;
+        }
+        .botaoAC, .botaoDEL {
+            background-color: rgb(255, 70, 70);
+        }
+        .botaoIgual {
+            grid-column: 3 / 5;
+            width: 83%;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculadora">
+        <div class="elementosCalculadora">
+            <div class="visorCalculadora" id="visorCalc"></div>
+            <button class="botaoCalculadora botaoAC" id="botaoAC">AC</button>
+            <button class="botaoCalculadora botaoDEL" id="botaoDEL">DEL</button>
+            <button class="botaoCalculadora" id="botaoDeTexto">%</button>
+            <button class="botaoCalculadora" id="botaoDeTexto">*</button>
+            <button class="botaoCalculadora" id="botaoDeTexto">7</button>
+            <button class="botaoCalculadora" id="botaoDeTexto">8</button>
+            <button class="botaoCalculadora" id="botaoDeTexto">9</button>
+            <button class="botaoCalculadora" id="botaoDeTexto">/</button>
+            <button class="botaoCalculadora" id="botaoDeTexto">4</button>
+            <button class="botaoCalculadora" id="botaoDeTexto">5</button>
+            <button class="botaoCalculadora" id="botaoDeTexto">6</button>
+            <button class="botaoCalculadora" id="botaoDeTexto">-</button>
+            <button class="botaoCalculadora" id="botaoDeTexto">1</button>
+            <button class="botaoCalculadora" id="botaoDeTexto">2</button>
+            <button class="botaoCalculadora" id="botaoDeTexto">3</button>
+            <button class="botaoCalculadora" id="botaoDeTexto">+</button>
+            <button class="botaoCalculadora" id="botaoDeTexto">0</button>
+            <button class="botaoCalculadora" id="botaoDeTexto">.</button>
+            <button class="botaoCalculadora botaoIgual" id="botaoIgual">=</button>
+        </div>
+    </div>
+    <script>
+        let visor = document.getElementById("visorCalc");
+        let erroSintaxe = false;
+        const botoesDeTexto = document.querySelectorAll("#botaoDeTexto");
+        const botaoAC = document.getElementById("botaoAC");
+        const botaoDEL = document.getElementById("botaoDEL");
+        const botaoIgual = document.getElementById("botaoIgual");
+
+        botaoAC.addEventListener("click", apagarTextoVisor);
+        botaoDEL.addEventListener("click", apagarUltimoCaracterVisor);
+        botaoIgual.addEventListener("click", calcular);
+
+        for(const botaoDeTexto of botoesDeTexto){
+            botaoDeTexto.addEventListener("click", () => {atualizarVisor(botaoDeTexto);});
+        }
+
+        function atualizarVisor(botaoDeTexto){
+            if(erroSintaxe){
+                visor.textContent = "";
+                erroSintaxe = false;
+            }
+            visor.textContent += botaoDeTexto.innerText;
+            visor.scrollLeft = visor.scrollWidth;
+        }
+
+        function apagarTextoVisor(){
+            if(!erroSintaxe){
+            visor.textContent = "";
+            }
+        }
+
+        function apagarUltimoCaracterVisor(){
+            if(!erroSintaxe){
+            visor.textContent = visor.textContent.slice(0, -1);
+            }
+        }
+
+        function calcular(){
+            try {
+                visor.textContent = eval(visor.innerText);
+            } catch(e) {
+                visor.textContent = "Syntax ERROR";
+                erroSintaxe = true;
+            }
+        }
+    </script>
+</body>
+</html>
