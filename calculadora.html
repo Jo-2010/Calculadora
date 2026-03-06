@@ -20,6 +20,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow-x: hidden;
+            overflow-y: hidden;
         }
         .calculadora {
             height: 600px;
@@ -32,6 +34,7 @@
             border-radius: 5px;
             box-shadow: 10px 10px 10px;
             margin: 30px 30px 30px 30px;
+            animation: introducaoCalc 1s forwards ease-out;
         }
         .visorCalculadora {
             height: 60px;
@@ -84,6 +87,15 @@
         .botaoIgual {
             grid-column: 3 / 5;
             width: 83%;
+        }
+        @keyframes introducaoCalc {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            } to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
